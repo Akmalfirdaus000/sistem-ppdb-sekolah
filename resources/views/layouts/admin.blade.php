@@ -71,9 +71,9 @@
                     📊 <a href="{{ route('admin.laporan.index') }}">Laporan</a>
                 </li>
 
-                <li class="px-4 py-3 hover:bg-danger text-white flex items-center gap-2 rounded-md">
-                    🚪 <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
-                </li>
+               <li class="mb-2">
+                        <a href="{{ route('logout') }}" class="block py-2 px-4 rounded hover:bg-red-500">🚪 Logout</a>
+                    </li>
 
                 <form id="logout-form" action="#" method="POST" class="hidden">
                     @csrf
