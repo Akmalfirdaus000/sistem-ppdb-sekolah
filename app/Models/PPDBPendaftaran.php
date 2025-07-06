@@ -11,14 +11,16 @@ class PPDBPendaftaran extends Model
 
     protected $table = 'ppdb_pendaftaran';
 
-    protected $fillable = [
-        'user_id',
-        'tahun_ajaran',
-        'jalur',
-        'status',
-        'validated_at',
-        'petugas_sekolah',
-    ];
+protected $fillable = [
+    'user_id',
+    'tahun_ajaran',
+    'jalur',
+    'status',
+    'validated_at',
+    'petugas_sekolah',
+    'nilai_rapor', // ✅ tambahkan ini
+];
+
 
     protected $dates = ['validated_at'];
 

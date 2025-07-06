@@ -24,15 +24,16 @@ class PPDBController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tahun_ajaran' => 'required|digits:4',
+            'tahun_ajaran' => 'required',
             'jalur' => 'required|in:zonasi,afirmasi,perpindahan,prestasi',
 
             // Dokumen umum
             'kartu_keluarga'    => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'akta_kelahiran'    => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
-            'rapor'             => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'sertifikat'        => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
-
+            // pretasu
+'nilai_rapor' => 'nullable|numeric|between:0,100',
+            'rapor'             => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             // Jalur afirmasi
             'bukti_kip_pkh'     => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
             'surat_disabilitas' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
@@ -49,6 +50,7 @@ class PPDBController extends Controller
             'user_id'       => $user_id,
             'tahun_ajaran'  => $request->tahun_ajaran,
             'jalur'         => $request->jalur,
+             'nilai_rapor'   => $request->jalur === 'prestasi' ? $request->nilai_rapor : null,
             'status'        => 'pending',
         ]);
 

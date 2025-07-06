@@ -12,25 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ppdb_pendaftaran', function (Blueprint $table) {
-    $table->id();
+            $table->id();
 
-    // Relasi ke user
-    $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            // Relasi ke user
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
 
-    // Tahun ajaran & jalur pendaftaran
-    $table->year('tahun_ajaran');
-    $table->enum('jalur', ['zonasi', 'afirmasi', 'perpindahan', 'prestasi'])->default('zonasi');
+            // Tahun ajaran & jalur pendaftaran
+            $table->year('tahun_ajaran');
+            $table->enum('jalur', ['zonasi', 'afirmasi', 'perpindahan', 'prestasi'])->default('zonasi');
 
-    // Status seleksi
-    $table->enum('status', ['pending', 'accepted', 'rejected', 'cadangan'])->default('pending');
+            // Nilai rapor untuk jalur prestasi (opsional)
+            $table->decimal('nilai_rapor', 5, 2)->nullable();
 
-    // Validasi oleh admin
-    $table->foreignId('petugas_sekolah')->nullable()->constrained('users')->nullOnDelete();
-    $table->timestamp('validated_at')->nullable();
+            // Status seleksi
+            $table->enum('status', ['pending', 'accepted', 'rejected', 'cadangan'])->default('pending');
 
-    $table->timestamps();
-});
+            // Validasi oleh admin
+            $table->foreignId('petugas_sekolah')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestamp('validated_at')->nullable();
 
+            $table->timestamps();
+        });
     }
 
     /**

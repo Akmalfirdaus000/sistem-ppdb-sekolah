@@ -12,24 +12,37 @@ use App\Exports\PPDBExport;
 
 class AdminPPDBController extends Controller
 {
-    public function index(Request $request)
-    {
-        $query = PPDBPendaftaran::with('user');
+public function index(Request $request)
+{
+    $query = PPDBPendaftaran::with(['user', 'dokumen','siswa'])
+        ->whereHas('user', function ($q) {
+            $q->where('role', 'siswa');
+        });
 
-        if ($request->filled('search')) {
-            $query->whereHas('user', fn($q) =>
-                $q->where('name', 'like', '%' . $request->search . '%')
-            );
-        }
-
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
-        $pendaftars = $query->paginate(10);
-
-        return view('admin.ppdb.index', compact('pendaftars'));
+    if ($request->filled('search')) {
+        $query->whereHas('user', function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%');
+        });
     }
+
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->filled('jalur')) {
+        $query->where('jalur', $request->jalur);
+
+        // Jika jalur prestasi, urutkan berdasarkan nilai rapor tertinggi
+        if ($request->jalur === 'prestasi') {
+            $query->orderByDesc('nilai_rapor');
+        }
+    }
+
+    $pendaftars = $query->paginate(10);
+
+    return view('admin.ppdb.index', compact('pendaftars'));
+}
+
 
     public function show($id, $tipe = null)
     {
