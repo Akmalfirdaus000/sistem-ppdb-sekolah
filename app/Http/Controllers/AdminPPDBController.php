@@ -107,8 +107,5 @@ public function index(Request $request)
             ->with('success', 'Status berhasil diperbarui!');
     }
 
-    public function export()
-    {
-        return Excel::download(new PPDBExport, 'ppdb.xlsx');
-    }
+
 }

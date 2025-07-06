@@ -14,11 +14,6 @@
     </div>
 </div>
 
-{{-- SECTION: Pengumuman --}}
-<div class="bg-white p-6 rounded-lg shadow">
-    <h2 class="text-xl font-semibold mb-4">Pengumuman</h2>
-    <p class="text-gray-700">📢 Hasil seleksi akan diumumkan pada <strong>10 Juli 2025</strong>. Silakan pantau dashboard ini secara berkala.</p>
-</div>
 
 @php
     use Carbon\Carbon;
@@ -32,10 +27,10 @@
     <h2 class="text-xl font-semibold mb-2">Status Pendaftaran Anda</h2>
     @if ($pendaftaran)
         <p class="text-lg">
-            Status: 
-            <span class="px-3 py-1 rounded text-white text-sm 
-                {{ $pendaftaran->status == 'Diterima' ? 'bg-green-600' : 
-                   ($pendaftaran->status == 'Cadangan' ? 'bg-yellow-500' : 
+            Status:
+            <span class="px-3 py-1 rounded text-white text-sm
+                {{ $pendaftaran->status == 'Diterima' ? 'bg-green-600' :
+                   ($pendaftaran->status == 'Cadangan' ? 'bg-yellow-500' :
                    ($pendaftaran->status == 'Ditolak' ? 'bg-red-600' : 'bg-gray-500')) }}">
                 {{ $pendaftaran->status ?? 'Belum Diverifikasi' }}
             </span>
@@ -45,6 +40,43 @@
         <p class="text-red-600">Anda belum melakukan pendaftaran.</p>
     @endif
 </div>
+{{-- SECTION: Pengumuman Terbaru --}}
+<div class="bg-white p-6 rounded-lg shadow mb-6">
+    <h2 class="text-xl font-semibold mb-4">📢 Pengumuman Terbaru</h2>
+
+    @php
+        $pengumuman = \App\Models\Pengumuman::where('ditampilkan_ke', 'siswa')
+            ->orWhere('ditampilkan_ke', 'semua')
+            ->latest()
+            ->first();
+    @endphp
+
+    @if ($pengumuman)
+        <div class="mb-3">
+            <p class="text-lg font-semibold"><i class="fas fa-file-alt mr-1"></i>{{ $pengumuman->judul }}</p>
+            <p class="text-sm text-gray-600 mb-2">{{ \Carbon\Carbon::parse($pengumuman->tanggal)->translatedFormat('d F Y') }}</p>
+            <p class="text-gray-800 text-sm leading-relaxed mb-2">{!! nl2br(e($pengumuman->isi)) !!}</p>
+
+            @if ($pengumuman->lampiran)
+                <p class="text-sm mb-2">
+                    <span class="font-semibold">File:</span>
+                    <a href="{{ asset('storage/' . $pengumuman->lampiran) }}"
+                       target="_blank" class="text-blue-600 hover:underline">
+                        {{ basename($pengumuman->lampiran) }}
+                    </a>
+                </p>
+
+                <div class="mt-4 border rounded overflow-hidden">
+                    <iframe src="{{ asset('storage/' . $pengumuman->lampiran) }}"
+                            width="100%" height="500px" class="rounded"></iframe>
+                </div>
+            @endif
+        </div>
+    @else
+        <p class="text-gray-600">Belum ada pengumuman saat ini.</p>
+    @endif
+</div>
+
 
 {{-- SECTION: Progress Langkah Pendaftaran --}}
 <div class="bg-white p-6 rounded-lg shadow mb-6">

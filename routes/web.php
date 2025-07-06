@@ -4,13 +4,14 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PPDBController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminDokumenController;
-use App\Http\Controllers\AdminLaporanController;
 use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\AdminPPDBController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PendaftaranController;
+use App\Http\Controllers\AdminDokumenController;
+use App\Http\Controllers\AdminLaporanController;
+use App\Http\Controllers\LaporanKepalaController;
 
 // ------------------------------
 // Route Umum (Welcome & Auth)
@@ -100,3 +101,26 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
     Route::get('/siswa-cadangan', [AdminController::class, 'cadanganIndex'])->name('admin.cadangan.index');
     Route::get('/siswa-ditolak', [AdminController::class, 'ditolakIndex'])->name('admin.ditolak.index');
 });
+use App\Http\Controllers\PendaftarKepalaController;
+use App\Http\Controllers\PengumumanKepalaController;
+
+// Group route untuk kepala sekolah
+Route::prefix('kepala')
+    ->middleware(['auth']) // Tambah 'role:kepala' jika kamu sudah buat middleware-nya
+    ->name('kepala.')
+    ->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'kepala_dashboard'])->name('dashboard');
+
+        // 🔽 Tambahkan ini untuk pengumuman
+        Route::get('/pengumuman', [PengumumanKepalaController::class, 'index'])->name('pengumuman.index');
+        Route::get('/pengumuman/create', [PengumumanKepalaController::class, 'create'])->name('pengumuman.create');
+        Route::post('/pengumuman', [PengumumanKepalaController::class, 'store'])->name('pengumuman.store');
+        Route::get('/pengumuman/{id}/edit', [PengumumanKepalaController::class, 'edit'])->name('pengumuman.edit');
+        Route::put('/pengumuman/{id}', [PengumumanKepalaController::class, 'update'])->name('pengumuman.update');
+        Route::delete('/pengumuman/{id}', [PengumumanKepalaController::class, 'destroy'])->name('pengumuman.destroy');
+
+          Route::get('/pendaftar', [PendaftarKepalaController::class, 'index'])->name('pendaftar.index');
+        Route::get('/pendaftar/{id}', [PendaftarKepalaController::class, 'show'])->name('pendaftar.show');
+        Route::get('/laporan', [LaporanKepalaController::class, 'index'])->name('laporan.index');
+    });
+
