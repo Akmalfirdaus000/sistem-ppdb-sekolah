@@ -34,12 +34,6 @@
         @endforeach
     </div>
 
-    <div class="mt-6">
-        <h3 class="text-lg font-semibold mb-2">Grafik Ringkasan (Opsional)</h3>
-        <!-- Bisa gunakan chart library seperti Chart.js, jika mau -->
-        <div class="bg-gray-50 p-4 rounded shadow text-center text-gray-500">
-            Grafik akan ditampilkan di sini (opsional, integrasi Chart.js / lainnya)
-        </div>
-    </div>
+    
 </div>
 @endsection

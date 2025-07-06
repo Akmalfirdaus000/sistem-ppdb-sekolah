@@ -12,12 +12,9 @@
     <nav class="bg-blue-800 text-white px-6 py-4 shadow-md">
         <div class="flex justify-between items-center">
             <h1 class="text-xl font-bold">📘 Panel Kepala Sekolah</h1>
-            <div>
+            <div class="flex items-center">
                 <span class="mr-4">👤 {{ auth()->user()->name }}</span>
-                <form method="POST" action="{{ route('logout') }}" class="inline">
-                    @csrf
-                    <button class="bg-red-600 hover:bg-red-700 px-3 py-1 rounded">Logout</button>
-                </form>
+                        <a href="{{ route('logout') }}" class="block py-2 px-4 rounded hover:bg-red-500">🚪 Logout</a>
             </div>
         </div>
     </nav>
